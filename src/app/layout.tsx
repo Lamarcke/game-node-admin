@@ -1,5 +1,9 @@
 import "@mantine/core/styles.css";
+import "@mantine/charts/styles.css";
+
 import "mantine-react-table/styles.css";
+
+import "@/components/globals.css";
 
 import {
   ColorSchemeScript,
@@ -8,10 +12,19 @@ import {
 } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
-import { Analytics } from "@vercel/analytics/react";
 import { spaceGrotesk } from "@/styles/fonts";
 import { theme } from "@/styles/theme";
 import { AppProvider } from "./provider";
+
+/**
+ * Basic configuration for wrapper services
+ */
+import { OpenAPI as ServerOpenAPI } from "@/wrapper/server";
+import { OpenAPI as SearchOpenAPI } from "@/wrapper/search";
+
+ServerOpenAPI.BASE = process.env.NEXT_PUBLIC_SERVER_URL!;
+ServerOpenAPI.WITH_CREDENTIALS = true;
+SearchOpenAPI.BASE = process.env.NEXT_PUBLIC_SEARCH_URL!;
 
 export const metadata = {
   metadataBase: new URL("https://mantine-admin.vercel.app/"),
@@ -39,7 +52,9 @@ export const metadata = {
 
 export default function RootLayout({
   children,
-}: { children: React.ReactNode }) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en-US">
       <head>
@@ -54,7 +69,6 @@ export default function RootLayout({
           <MantineProvider theme={theme}>
             <ModalsProvider>
               <AppProvider>{children}</AppProvider>
-              <Analytics />
             </ModalsProvider>
             <Notifications />
           </MantineProvider>

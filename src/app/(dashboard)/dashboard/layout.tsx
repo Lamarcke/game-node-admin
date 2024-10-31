@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 import {
   AppShell,
   Burger,
@@ -11,13 +13,18 @@ import { useDisclosure } from "@mantine/hooks";
 import { AdminHeader } from "@/components/Headers/AdminHeader";
 import { Navbar } from "@/components/Navbar/Navbar";
 import { navLinks } from "@/config";
+import SessionAuthWithRoles from "@/components/auth/SessionAuthWithRoles";
+import { EUserRoles } from "@/components/auth/roles";
+import useOnMobile from "@/components/general/hooks/useOnMobile";
 
 interface Props {
   children: React.ReactNode;
 }
 
 export default function DashboardLayout({ children }: Props) {
-  const [opened, { toggle }] = useDisclosure();
+  const onMobile = useOnMobile();
+  // Initially opened on desktop
+  const [opened, { toggle }] = useDisclosure(!onMobile);
   const { colorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
 
@@ -25,35 +32,35 @@ export default function DashboardLayout({ children }: Props) {
     colorScheme === "dark" ? theme.colors.dark[7] : theme.colors.gray[0];
 
   return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
-      padding="md"
-      transitionDuration={500}
-      transitionTimingFunction="ease"
-    >
-      <AppShell.Navbar>
-        <Navbar data={navLinks} hidden={!opened} />
-      </AppShell.Navbar>
-      <AppShell.Header>
-        <AdminHeader
-          burger={
-            <Burger
-              opened={opened}
-              onClick={toggle}
-              hiddenFrom="sm"
-              size="sm"
-              mr="xl"
-            />
-          }
-        />
-      </AppShell.Header>
-      <AppShell.Main bg={bg}>{children}</AppShell.Main>
-      <AppShell.Footer>
-        <Text w="full" size="sm" c="gray">
-          CopyRight © 2023 Jotyy
-        </Text>
-      </AppShell.Footer>
-    </AppShell>
+    <SessionAuthWithRoles roles={[EUserRoles.USER, EUserRoles.MOD]}>
+      <AppShell
+        header={{ height: 60 }}
+        navbar={{
+          width: 300,
+          breakpoint: "sm",
+          collapsed: { mobile: !opened, desktop: !opened },
+        }}
+        padding="md"
+        transitionDuration={500}
+        transitionTimingFunction="ease"
+      >
+        <AppShell.Navbar>
+          <Navbar data={navLinks} hidden={!opened} />
+        </AppShell.Navbar>
+        <AppShell.Header>
+          <AdminHeader
+            burger={
+              <Burger opened={opened} onClick={toggle} size="sm" mr="sm" />
+            }
+          />
+        </AppShell.Header>
+        <AppShell.Main bg={bg}>{children}</AppShell.Main>
+        <AppShell.Footer>
+          <Text w="full" size="sm" c="gray">
+            CopyRight © 2023 Jotyy
+          </Text>
+        </AppShell.Footer>
+      </AppShell>
+    </SessionAuthWithRoles>
   );
 }

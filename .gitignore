@@ -46,3 +46,7 @@ public/sitemap-0.xml
 public/~partytown
 
 .env
+
+!src/wrapper/input
+!src/wrapper/generate.js
+src/wrapper
