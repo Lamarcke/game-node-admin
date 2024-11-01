@@ -6,9 +6,9 @@ import "mantine-react-table/styles.css";
 import "@/components/globals.css";
 
 import {
-  ColorSchemeScript,
-  DirectionProvider,
-  MantineProvider,
+    ColorSchemeScript,
+    DirectionProvider,
+    MantineProvider,
 } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
@@ -27,53 +27,53 @@ ServerOpenAPI.WITH_CREDENTIALS = true;
 SearchOpenAPI.BASE = process.env.NEXT_PUBLIC_SEARCH_URL!;
 
 export const metadata = {
-  metadataBase: new URL("https://mantine-admin.vercel.app/"),
-  title: { default: "Mantine Admin", template: "%s | Mantine Admin" },
-  description: "A Modern Dashboard with Next.js.",
-  keywords: [
-    "Next.js",
-    "Mantine",
-    "Admin",
-    "Template",
-    "Admin Template",
-    "Admin Dashboard",
-    "Admin Panel",
-    "Admin UI",
-  ],
-  authors: [
-    {
-      name: "jotyy",
-      url: "https://jotyy.vercel.app",
-    },
-  ],
-  creator: "jotyy",
-  manifest: "https://mantine-admin.vercel.app/site.webmanifest",
+    metadataBase: new URL("https://mantine-admin.vercel.app/"),
+    title: { default: "Mantine Admin", template: "%s | Mantine Admin" },
+    description: "A Modern Dashboard with Next.js.",
+    keywords: [
+        "Next.js",
+        "Mantine",
+        "Admin",
+        "Template",
+        "Admin Template",
+        "Admin Dashboard",
+        "Admin Panel",
+        "Admin UI",
+    ],
+    authors: [
+        {
+            name: "jotyy",
+            url: "https://jotyy.vercel.app",
+        },
+    ],
+    creator: "jotyy",
+    manifest: "https://mantine-admin.vercel.app/site.webmanifest",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return (
-    <html lang="en-US">
-      <head>
-        <ColorSchemeScript />
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
-        />
-      </head>
-      <body className={spaceGrotesk.className}>
-        <DirectionProvider>
-          <MantineProvider theme={theme}>
-            <ModalsProvider>
-              <AppProvider>{children}</AppProvider>
-            </ModalsProvider>
-            <Notifications />
-          </MantineProvider>
-        </DirectionProvider>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en-US">
+            <head>
+                <ColorSchemeScript />
+                <meta
+                    name="viewport"
+                    content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
+                />
+            </head>
+            <body className={spaceGrotesk.className}>
+                <DirectionProvider>
+                    <MantineProvider theme={theme} forceColorScheme={"dark"}>
+                        <ModalsProvider>
+                            <AppProvider>{children}</AppProvider>
+                        </ModalsProvider>
+                        <Notifications />
+                    </MantineProvider>
+                </DirectionProvider>
+            </body>
+        </html>
+    );
 }
