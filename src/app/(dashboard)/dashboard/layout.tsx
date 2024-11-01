@@ -38,7 +38,7 @@ export default function DashboardLayout({ children }: Props) {
         navbar={{
           width: 300,
           breakpoint: "sm",
-          collapsed: { mobile: !opened, desktop: !opened },
+          collapsed: { mobile: !opened },
         }}
         padding="md"
         transitionDuration={500}
@@ -50,16 +50,17 @@ export default function DashboardLayout({ children }: Props) {
         <AppShell.Header>
           <AdminHeader
             burger={
-              <Burger opened={opened} onClick={toggle} size="sm" mr="sm" />
+              <Burger
+                hiddenFrom={"sm"}
+                opened={opened}
+                onClick={toggle}
+                size="sm"
+                mr="xl"
+              />
             }
           />
         </AppShell.Header>
         <AppShell.Main bg={bg}>{children}</AppShell.Main>
-        <AppShell.Footer>
-          <Text w="full" size="sm" c="gray">
-            CopyRight © 2023 Jotyy
-          </Text>
-        </AppShell.Footer>
       </AppShell>
     </SessionAuthWithRoles>
   );

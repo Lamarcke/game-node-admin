@@ -27,9 +27,6 @@ export function DashboardContent() {
       <GridCol span={{ sm: 12, md: 12, lg: 12 }}>
         <ActivityByPeriodSection />
       </GridCol>
-      <GridCol span={12}>
-        <TransactionCard />
-      </GridCol>
     </Grid>
   );
 }
