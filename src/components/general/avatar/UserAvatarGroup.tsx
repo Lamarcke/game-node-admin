@@ -6,6 +6,7 @@ import React from "react";
 import useUserProfile from "@/components/profile/hooks/useUserProfile";
 import useOnMobile from "@/components/general/hooks/useOnMobile";
 import Break from "@/components/general/Break";
+import MainAppLink from "@/components/general/MainAppLink";
 
 interface IProps {
     userId: string;
@@ -25,7 +26,7 @@ export const UserAvatarGroup = ({
     const profileQuery = useUserProfile(userId);
     const onMobile = useOnMobile();
     return (
-        <Link
+        <MainAppLink
             href={`/profile/${profileQuery.data?.userId}`}
             className={"w-full h-full"}
         >
@@ -47,6 +48,6 @@ export const UserAvatarGroup = ({
                     {profileQuery.data?.username}
                 </Text>
             </Group>
-        </Link>
+        </MainAppLink>
     );
 };
