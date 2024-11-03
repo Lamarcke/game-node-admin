@@ -13,7 +13,6 @@ import {
 } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
-import { spaceGrotesk } from "@/styles/fonts";
 import { theme } from "@/styles/theme";
 import { AppProvider } from "./provider";
 
@@ -28,27 +27,17 @@ ServerOpenAPI.WITH_CREDENTIALS = true;
 SearchOpenAPI.BASE = process.env.NEXT_PUBLIC_SEARCH_URL!;
 
 export const metadata = {
-    metadataBase: new URL("https://mantine-admin.vercel.app/"),
-    title: { default: "Mantine Admin", template: "%s | Mantine Admin" },
-    description: "A Modern Dashboard with Next.js.",
-    keywords: [
-        "Next.js",
-        "Mantine",
-        "Admin",
-        "Template",
-        "Admin Template",
-        "Admin Dashboard",
-        "Admin Panel",
-        "Admin UI",
-    ],
+    metadataBase: new URL("https://admin.gamenode.app/"),
+    title: { default: "GameNode Admin", template: "%s | GameNode Admin" },
+    description: "GameNode's admin dashboard.",
     authors: [
         {
-            name: "jotyy",
-            url: "https://jotyy.vercel.app",
+            name: "Lamarcke",
+            url: "https://github.com/Lamarcke",
         },
     ],
-    creator: "jotyy",
-    manifest: "https://mantine-admin.vercel.app/site.webmanifest",
+    creator: "Lamarcke",
+    manifest: "https://admin.gamenode.app/site.webmanifest",
 };
 
 export default function RootLayout({
@@ -65,9 +54,9 @@ export default function RootLayout({
                     content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
                 />
             </head>
-            <body className={spaceGrotesk.className}>
+            <body>
                 <DirectionProvider>
-                    <MantineProvider theme={theme} forceColorScheme={"dark"}>
+                    <MantineProvider theme={theme} defaultColorScheme={"dark"}>
                         <ModalsProvider>
                             <AppProvider>{children}</AppProvider>
                         </ModalsProvider>

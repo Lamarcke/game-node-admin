@@ -2,7 +2,6 @@
 
 import { Box, ScrollArea } from "@mantine/core";
 
-import { UserButton } from "@/components/UserButton/UserButton";
 import type { NavItem } from "@/types/nav-item";
 import { NavLinksGroup } from "./NavLinksGroup";
 import classes from "./Navbar.module.css";

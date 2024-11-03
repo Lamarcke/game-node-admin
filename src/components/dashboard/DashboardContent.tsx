@@ -1,15 +1,7 @@
 "use client";
 
 import { Flex, Grid, GridCol } from "@mantine/core";
-import { BalanceCard } from "../Dashboard/BalanceCard";
-import { OverviewCard } from "../Dashboard/OverviewCard";
-import { ProfileCard } from "../Dashboard/ProfileCard";
-import { TransactionCard } from "../Dashboard/TransactionCard";
-import { WelcomeCard } from "../Dashboard/WelcomeCard";
-import { StatsGroup } from "../StatsGroup";
-import { mockData } from "../StatsGroup/mock";
 import ActiveUsersSection from "@/components/dashboard/ActiveUsersSection";
-import UserJoinPeriodChart from "@/components/charts/UserJoinPeriodChart";
 import UserJoinSection from "@/components/dashboard/UserJoinSection";
 import ActivitySection from "@/components/dashboard/ActivitySection";
 

@@ -9,36 +9,28 @@ import { AccessDeniedScreen } from "supertokens-auth-react/recipe/session/prebui
 import { redirectToAuth } from "supertokens-auth-react";
 
 interface Props extends PropsWithChildren {
-  roles: EUserRoles[];
+    roles: EUserRoles[];
 }
 
 const SessionAuthWithRoles = ({ children, roles }: Props) => {
-  const [userRoles, loading] = useUserRoles();
-
-  if (loading) {
     return (
-      <Stack className={"w-screen h-screen items-center justify-center"}>
-        <CenteredLoading message={"Loading access permissions..."} />
-      </Stack>
+        <SessionAuth
+            requireAuth={true}
+            accessDeniedScreen={AccessDeniedScreen}
+            overrideGlobalClaimValidators={(globalClaimValidators) => {
+                const validators = [...globalClaimValidators];
+                if (roles.length > 0) {
+                    validators.push(
+                        UserRoleClaim.validators.includesAny(roles),
+                    );
+                }
+
+                return validators;
+            }}
+        >
+            {children}
+        </SessionAuth>
     );
-  }
-
-  return (
-    <SessionAuth
-      requireAuth={true}
-      accessDeniedScreen={AccessDeniedScreen}
-      overrideGlobalClaimValidators={(globalClaimValidators) => {
-        const validators = [...globalClaimValidators];
-        if (roles.length > 0) {
-          validators.push(UserRoleClaim.validators.includesAny(roles));
-        }
-
-        return validators;
-      }}
-    >
-      {children}
-    </SessionAuth>
-  );
 };
 
 export default SessionAuthWithRoles;

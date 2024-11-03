@@ -38,7 +38,7 @@ const profileToPeriodItems = (profiles: Profile[]): JoinPeriodItem[] => {
     });
 };
 
-interface Props extends Omit<LineChartProps, "data" | "series" | "dataKey"> {}
+type Props = Omit<LineChartProps, "data" | "series" | "dataKey">;
 
 const UserJoinPeriodChart = ({ ...others }: Props) => {
     const { isLoading, data, isError } = useUserProfiles();
@@ -49,7 +49,7 @@ const UserJoinPeriodChart = ({ ...others }: Props) => {
     }, [data]);
 
     const chartData = useMemo<JoinPeriodItem[] | undefined>(() => {
-        if (data) {
+        if (profiles) {
             return profileToPeriodItems(profiles);
         }
 

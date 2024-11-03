@@ -27,8 +27,12 @@ const ActivitySection = () => {
             </Card.Section>
             <Card.Section style={sectionStyle}>
                 <a target={"_blank"} href={"https://matomo.gamenode.app"}>
-                    <Button variant={"outline"} size={"sm"}>
-                        Webanalytics <IconExternalLink />
+                    <Button
+                        variant={"outline"}
+                        size={"sm"}
+                        rightSection={<IconExternalLink />}
+                    >
+                        WebAnalytics
                     </Button>
                 </a>
             </Card.Section>
