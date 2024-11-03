@@ -15,6 +15,7 @@ import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { theme } from "@/styles/theme";
 import { AppProvider } from "./provider";
+import SuperTokensProvider from "@/components/auth/SuperTokensProvider";
 
 /**
  * Basic configuration for wrapper services
@@ -55,14 +56,19 @@ export default function RootLayout({
                 />
             </head>
             <body>
-                <DirectionProvider>
-                    <MantineProvider theme={theme} defaultColorScheme={"dark"}>
-                        <ModalsProvider>
-                            <AppProvider>{children}</AppProvider>
-                        </ModalsProvider>
-                        <Notifications />
-                    </MantineProvider>
-                </DirectionProvider>
+                <SuperTokensProvider>
+                    <DirectionProvider>
+                        <MantineProvider
+                            theme={theme}
+                            defaultColorScheme={"dark"}
+                        >
+                            <ModalsProvider>
+                                <AppProvider>{children}</AppProvider>
+                            </ModalsProvider>
+                            <Notifications />
+                        </MantineProvider>
+                    </DirectionProvider>
+                </SuperTokensProvider>
             </body>
         </html>
     );
