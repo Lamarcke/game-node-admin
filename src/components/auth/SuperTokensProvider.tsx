@@ -43,11 +43,7 @@ export const frontendConfig = (): SuperTokensConfig => {
                     ],
                 },
             }),
-            Session.init({
-                sessionTokenFrontendDomain: IS_DEV
-                    ? undefined
-                    : (process.env.NEXT_PUBLIC_SESSION_DOMAIN as string),
-            }),
+            Session.init(),
         ],
         windowHandler: (original) => ({
             ...original,

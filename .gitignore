@@ -50,3 +50,4 @@ public/~partytown
 !src/wrapper/input
 !src/wrapper/generate.js
 src/wrapper
+/.env.local

@@ -13,6 +13,9 @@ services:
     networks:
       - game_node_app_public
 
+    ports:
+      - "3001:3001"
+
 
 networks:
   game_node_app_public:
