@@ -3,7 +3,6 @@ import {
     useMantineReactTable,
 } from "mantine-react-table";
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export type CustomTableOptions<TData extends Record<string, any> = {}> = Omit<
     MRT_TableOptions<TData>,
     | "mantinePaginationProps"
@@ -13,7 +12,6 @@ export type CustomTableOptions<TData extends Record<string, any> = {}> = Omit<
     | "initialState.density"
 >;
 
-// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export const useCustomTable = <TData extends Record<string, any> = {}>(
     tableOptions: CustomTableOptions<TData>,
 ) => {

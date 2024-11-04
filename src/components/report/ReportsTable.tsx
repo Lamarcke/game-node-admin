@@ -7,7 +7,7 @@ import {
     reportCategoryToString,
     reportSourceTypeToString,
 } from "@/components/report/util/reportCategoryToString";
-import { useCustomTable } from "@/hooks/use-custom-table";
+import { useCustomTable } from "@/components/table/hooks/use-custom-table";
 import { useReports } from "@/components/report/hooks/useReports";
 import { Button, Paper, Title, Text, Badge } from "@mantine/core";
 import { PaginationState } from "@tanstack/table-core";
@@ -69,8 +69,14 @@ const columns: MRT_ColumnDef<Report>[] = [
     },
     {
         header: "Created At",
-        accessorKey: "createdAt",
         accessorFn: (row) => new Date(row.createdAt).toLocaleString("en-US"),
+        sortingFn: (rowA, rowB, columnId) => {
+            const createDateA = new Date(rowA.original.createdAt);
+            const createDateB = new Date(rowB.original.createdAt);
+
+            return createDateA.getTime() - createDateB.getTime();
+        },
+        id: "createdAt",
     },
 ];
 

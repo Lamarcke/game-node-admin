@@ -59,7 +59,6 @@ export const frontendConfig = (): SuperTokensConfig => {
 
 if (typeof window !== "undefined") {
     // we only want to call this init function on the frontend, so we check typeof window !== 'undefined'
-    console.log("Supertokens init with routerInfo: ", routerInfo);
     SuperTokensReact.init(frontendConfig());
 }
 

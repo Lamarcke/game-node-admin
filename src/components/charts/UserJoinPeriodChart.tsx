@@ -13,7 +13,16 @@ interface JoinPeriodItem {
 const profileToPeriodItems = (profiles: Profile[]): JoinPeriodItem[] => {
     const periodMap = new Map<string, number>();
 
-    for (const profile of profiles) {
+    // Sort by createdAt ASC
+    // (meaning newer users will be at the end of the chart)
+    const sortedProfiles = profiles.toSorted((a, b) => {
+        const createDateA = new Date(a.createdAt);
+        const createDateB = new Date(b.createdAt);
+
+        return createDateA.getTime() - createDateB.getTime();
+    });
+
+    for (const profile of sortedProfiles) {
         const createdAtDate = new Date(profile.createdAt);
         const createdAtMonth = `${createdAtDate.getMonth() + 1}`.padStart(
             2,
