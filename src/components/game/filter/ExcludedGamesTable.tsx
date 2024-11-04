@@ -1,0 +1,142 @@
+"use client";
+
+import React, { useMemo, useState } from "react";
+import { useExcludedGames } from "@/components/game/filter/hooks/useExcludedGames";
+import {
+    MantineReactTable,
+    MRT_ColumnDef,
+    MRT_PaginationState,
+} from "mantine-react-table";
+import { useCustomTable } from "@/components/table/hooks/use-custom-table";
+import { Game, GameExclusion } from "@/wrapper/server";
+import { Badge, Box, MantineColor, Paper } from "@mantine/core";
+import { UserAvatarGroup } from "@/components/general/avatar/UserAvatarGroup";
+import { useGames } from "@/components/game/hooks/useGames";
+import GameFigureImage from "@/components/game/figure/GameFigureImage";
+
+interface GameExclusionWithGameInfo extends GameExclusion {
+    game: Game;
+}
+
+const columns: MRT_ColumnDef<GameExclusionWithGameInfo>[] = [
+    {
+        header: "Image",
+        id: "figure",
+        maxSize: 100,
+        Cell: ({ row }) => {
+            return (
+                <Box className={"max-w-20"}>
+                    <GameFigureImage game={row.original.game} />
+                </Box>
+            );
+        },
+    },
+    {
+        header: "Game Id",
+        accessorKey: "targetGameId",
+        enableSorting: false,
+    },
+    {
+        header: "Name",
+        accessorKey: "game.name",
+    },
+    {
+        accessorFn: (row) => {
+            return row.isActive ? "Active" : "Inactive";
+        },
+        header: "Status",
+        filterVariant: "select",
+        mantineFilterSelectProps: {
+            data: [
+                { label: "Active", value: "Active" },
+                { label: "Inactive", value: "Inactive" },
+            ],
+        },
+        Cell: ({ row, renderedCellValue }) => {
+            const item = row.original;
+            const color: MantineColor = item.isActive ? "green" : "red";
+            return <Badge color={color}>{renderedCellValue}</Badge>;
+        },
+    },
+    {
+        header: "Issued by",
+        accessorKey: "issuerUserId",
+        Cell: ({ row }) => {
+            return <UserAvatarGroup userId={row.original.issuerUserId} />;
+        },
+    },
+    {
+        header: "Created At",
+        accessorFn: (row) => new Date(row.createdAt).toLocaleString("en-US"),
+        sortingFn: (rowA, rowB, columnId) => {
+            const createDateA = new Date(rowA.original.createdAt);
+            const createDateB = new Date(rowB.original.createdAt);
+
+            return createDateA.getTime() - createDateB.getTime();
+        },
+        id: "createdAt",
+    },
+];
+
+const ExcludedGamesTable = () => {
+    const [pagination, setPagination] = useState<MRT_PaginationState>({
+        pageIndex: 0,
+        pageSize: 20,
+    });
+
+    const offset = pagination.pageIndex * pagination.pageSize;
+    const limit = pagination.pageSize;
+
+    const { data, isLoading, isError, isFetching } = useExcludedGames(
+        offset,
+        limit,
+    );
+
+    const gameIds = useMemo(() => {
+        return data?.data.map((exclusion) => exclusion.targetGameId);
+    }, [data]);
+
+    const gamesQuery = useGames({
+        gameIds,
+        relations: {
+            cover: true,
+        },
+    });
+
+    const items = useMemo(() => {
+        if (data && gamesQuery.data) {
+            return data.data.map((exclusion): GameExclusionWithGameInfo => {
+                const relatedGame = gamesQuery.data.find(
+                    (game) => game.id === exclusion.targetGameId,
+                )!;
+
+                return {
+                    ...exclusion,
+                    game: relatedGame,
+                };
+            });
+        }
+    }, [data, gamesQuery.data]);
+
+    const table = useCustomTable<GameExclusionWithGameInfo>({
+        columns: columns,
+        data: items ?? [],
+        state: {
+            isLoading: isLoading,
+            showAlertBanner: isError,
+            showProgressBars: isFetching,
+            pagination,
+        },
+        manualPagination: true,
+        onPaginationChange: setPagination,
+        rowCount: data?.pagination.totalItems ?? 0,
+    });
+
+    return (
+        <Paper withBorder radius="md" p="md" mt="lg">
+            <MantineReactTable table={table} />
+        </Paper>
+    );
+};
+
+export default ExcludedGamesTable;
