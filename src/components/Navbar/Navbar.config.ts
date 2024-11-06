@@ -2,6 +2,7 @@ import {
     IconCheckbox,
     IconComponents,
     IconDashboard,
+    IconDeviceGamepad,
     IconLock,
     IconMoodSmile,
     IconReport,
@@ -25,6 +26,16 @@ export const navLinks: NavItem[] = [
             {
                 label: "Grant",
                 link: "/dashboard/achievement/grant",
+            },
+        ],
+    },
+    {
+        label: "Game",
+        icon: IconDeviceGamepad,
+        links: [
+            {
+                label: "Manage exclusions",
+                link: "/dashboard/game/filter",
             },
         ],
     },

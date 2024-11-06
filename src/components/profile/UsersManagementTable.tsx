@@ -99,18 +99,6 @@ const UsersManagementTable = () => {
         },
     });
 
-    if (isLoading) {
-        return <CenteredLoading message="Loading..." />;
-    } else if (isError) {
-        return (
-            <CenteredErrorMessage
-                message={"Failed to load users. Please try again."}
-            />
-        );
-    } else if (data == undefined) {
-        return null;
-    }
-
     return (
         <Paper withBorder radius="md" p="md" mt="lg">
             <Modal
