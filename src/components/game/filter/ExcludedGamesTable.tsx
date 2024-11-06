@@ -8,7 +8,12 @@ import {
     MRT_PaginationState,
 } from "mantine-react-table";
 import { useCustomTable } from "@/components/table/hooks/use-custom-table";
-import { Game, GameExclusion } from "@/wrapper/server";
+import {
+    ChangeExclusionStatusDto,
+    Game,
+    GameExclusion,
+    GameFilterService,
+} from "@/wrapper/server";
 import {
     ActionIcon,
     Badge,
@@ -16,9 +21,11 @@ import {
     Button,
     Group,
     MantineColor,
+    Menu,
     Modal,
     Paper,
     Tooltip,
+    Text,
 } from "@mantine/core";
 import { UserAvatarGroup } from "@/components/general/avatar/UserAvatarGroup";
 import { useGames } from "@/components/game/hooks/useGames";
@@ -31,6 +38,15 @@ import {
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import AddGameExclusionForm from "@/components/game/filter/form/AddGameExclusionForm";
+import { useMutation } from "@tanstack/react-query";
+import { notifications } from "@mantine/notifications";
+import { getErrorMessage } from "@/util/getErrorMessage";
+import { modals } from "@mantine/modals";
+
+// necessary because useMutation only allows for one parameter in mutationFn
+interface ChangeExclusionMutationRequest extends ChangeExclusionStatusDto {
+    gameId: number;
+}
 
 interface GameExclusionWithGameInfo extends GameExclusion {
     game: Game;
@@ -107,10 +123,8 @@ const ExcludedGamesTable = () => {
     const offset = pagination.pageIndex * pagination.pageSize;
     const limit = pagination.pageSize;
 
-    const { data, isLoading, isError, isFetching } = useExcludedGames(
-        offset,
-        limit,
-    );
+    const { data, isLoading, isError, isFetching, invalidate } =
+        useExcludedGames(offset, limit);
 
     const gameIds = useMemo(() => {
         return data?.data.map((exclusion) => exclusion.targetGameId);
@@ -138,6 +152,36 @@ const ExcludedGamesTable = () => {
         }
     }, [data, gamesQuery.data]);
 
+    const changeStatusMutation = useMutation({
+        mutationFn: async (dto: ChangeExclusionMutationRequest) => {
+            await GameFilterService.gameFilterControllerChangeStatus(
+                dto.gameId,
+                {
+                    isActive: dto.isActive,
+                },
+            );
+
+            return dto.isActive;
+        },
+        onSuccess: (isActive) => {
+            notifications.show({
+                color: "green",
+                message: `Sucessfully ${isActive ? "activated" : "deactivated"} filter.`,
+            });
+        },
+        onError: (err) => {
+            const msg = getErrorMessage(err);
+
+            notifications.show({
+                color: "red",
+                message: msg,
+            });
+        },
+        onSettled: () => {
+            invalidate();
+        },
+    });
+
     const table = useCustomTable<GameExclusionWithGameInfo>({
         columns: columns,
         data: items ?? [],
@@ -164,6 +208,25 @@ const ExcludedGamesTable = () => {
                         </ActionIcon>
                     </Tooltip>
                 </Group>
+            );
+        },
+        enableRowActions: true,
+        renderRowActionMenuItems: (tableItem) => {
+            const item = tableItem.row.original;
+            return (
+                <>
+                    <Menu.Item
+                        onClick={() => {
+                            const dto: ChangeExclusionMutationRequest = {
+                                gameId: item.targetGameId,
+                                isActive: !item.isActive,
+                            };
+                            changeStatusMutation.mutate(dto);
+                        }}
+                    >
+                        {item.isActive ? "Deactivate" : "Activate"}
+                    </Menu.Item>
+                </>
             );
         },
     });
