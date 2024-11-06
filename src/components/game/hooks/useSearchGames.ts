@@ -33,5 +33,8 @@ export default function useSearchGames(
         },
         placeholderData: keepPreviousData,
         enabled: enabled,
+        refetchOnWindowFocus: false,
+        refetchInterval: false,
+        refetchOnReconnect: false,
     });
 }

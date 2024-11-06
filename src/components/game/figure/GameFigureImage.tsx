@@ -1,4 +1,9 @@
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, {
+    ComponentProps,
+    PropsWithChildren,
+    useEffect,
+    useState,
+} from "react";
 import { AspectRatio, Image, ImageProps } from "@mantine/core";
 import Link from "next/link";
 import {
@@ -7,12 +12,13 @@ import {
 } from "@/components/game/util/getSizedImageUrl";
 import { TGameOrSearchGame } from "@/components/game/util/types";
 import { getCoverUrl } from "@/components/game/util/getCoverUrl";
+import MainAppLink from "@/components/general/MainAppLink";
 
-export interface IGameFigureProps extends PropsWithChildren {
+export interface IGameFigureProps
+    extends PropsWithChildren<Omit<ComponentProps<typeof Link>, "href">> {
     game: TGameOrSearchGame | undefined;
     onClick?: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
     imageProps?: ImageProps;
-    linkProps?: React.ComponentProps<typeof Link>;
     href?: string;
 }
 
@@ -27,20 +33,20 @@ export interface IGameFigureProps extends PropsWithChildren {
 const GameFigureImage = ({
     game,
     imageProps,
-    linkProps,
     href,
     onClick,
     children,
+    ...others
 }: IGameFigureProps) => {
     const coverUrl = getCoverUrl(game);
     const sizedCoverUrl = getSizedImageUrl(coverUrl, ImageSize.COVER_BIG);
     const defaultHref = `/game/${game?.id}`;
     return (
-        <Link
+        <MainAppLink
             href={href ?? defaultHref}
             className="w-full h-auto"
             onClick={onClick}
-            {...linkProps}
+            {...others}
         >
             <AspectRatio ratio={264 / 354} pos="relative" h={"100%"} w={"auto"}>
                 <Image
@@ -52,7 +58,7 @@ const GameFigureImage = ({
                 />
                 {children}
             </AspectRatio>
-        </Link>
+        </MainAppLink>
     );
 };
 

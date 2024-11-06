@@ -10,7 +10,8 @@ const Page = () => {
                 <Text className={"text-sm text-dimmed"}>
                     Excluded games won't show up in front-facing content, like
                     the home page, explore screen, or the activities page. They
-                    can still be searched for and visited.
+                    can still be searched for, visited and be visible in user's
+                    collections.
                 </Text>
             </Box>
 

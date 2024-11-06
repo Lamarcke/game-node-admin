@@ -9,10 +9,28 @@ import {
 } from "mantine-react-table";
 import { useCustomTable } from "@/components/table/hooks/use-custom-table";
 import { Game, GameExclusion } from "@/wrapper/server";
-import { Badge, Box, MantineColor, Paper } from "@mantine/core";
+import {
+    ActionIcon,
+    Badge,
+    Box,
+    Button,
+    Group,
+    MantineColor,
+    Modal,
+    Paper,
+    Tooltip,
+} from "@mantine/core";
 import { UserAvatarGroup } from "@/components/general/avatar/UserAvatarGroup";
 import { useGames } from "@/components/game/hooks/useGames";
 import GameFigureImage from "@/components/game/figure/GameFigureImage";
+import {
+    IconAdjustmentsPlus,
+    IconCirclePlus,
+    IconPlus,
+    IconSquarePlus,
+} from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+import AddGameExclusionForm from "@/components/game/filter/form/AddGameExclusionForm";
 
 interface GameExclusionWithGameInfo extends GameExclusion {
     game: Game;
@@ -84,6 +102,8 @@ const ExcludedGamesTable = () => {
         pageSize: 20,
     });
 
+    const [addExclusionModalOpened, addExclusionModalUtils] = useDisclosure();
+
     const offset = pagination.pageIndex * pagination.pageSize;
     const limit = pagination.pageSize;
 
@@ -130,10 +150,34 @@ const ExcludedGamesTable = () => {
         manualPagination: true,
         onPaginationChange: setPagination,
         rowCount: data?.pagination.totalItems ?? 0,
+        renderTopToolbarCustomActions: (table) => {
+            return (
+                <Group className={"w-full h-full items-center justify-end"}>
+                    <Tooltip label={"Add exclusion"}>
+                        <ActionIcon
+                            variant={"subtle"}
+                            color={"gray"}
+                            size={"lg"}
+                            onClick={addExclusionModalUtils.open}
+                        >
+                            <IconSquarePlus />
+                        </ActionIcon>
+                    </Tooltip>
+                </Group>
+            );
+        },
     });
 
     return (
         <Paper withBorder radius="md" p="md" mt="lg">
+            <Modal
+                opened={addExclusionModalOpened}
+                onClose={addExclusionModalUtils.close}
+                title={"Add game exclusion"}
+                size={"lg"}
+            >
+                <AddGameExclusionForm onClose={addExclusionModalUtils.close} />
+            </Modal>
             <MantineReactTable table={table} />
         </Paper>
     );
