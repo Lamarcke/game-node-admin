@@ -80,7 +80,7 @@ const ReportHandleConfirmModal = ({ reportId, opened, onClose }: Props) => {
             if (!handleAction) {
                 throw new Error("No action selected!");
             }
-            await ReportService.reportControllerHandle(reportId, {
+            await ReportService.reportControllerHandleV1(reportId, {
                 action: handleAction,
                 deleteReportedContent:
                     handleAction !== "discard" ? deleteReportedContent : false,

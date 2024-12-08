@@ -22,6 +22,7 @@ import SuperTokensProvider from "@/components/auth/SuperTokensProvider";
  */
 import { OpenAPI as ServerOpenAPI } from "@/wrapper/server";
 import { OpenAPI as SearchOpenAPI } from "@/wrapper/search";
+import MatomoWrapper from "@/components/general/MatomoWrapper";
 
 ServerOpenAPI.BASE = process.env.NEXT_PUBLIC_SERVER_URL!;
 ServerOpenAPI.WITH_CREDENTIALS = true;
@@ -66,6 +67,7 @@ export default function RootLayout({
                                 <AppProvider>{children}</AppProvider>
                             </ModalsProvider>
                             <Notifications />
+                            <MatomoWrapper />
                         </MantineProvider>
                     </DirectionProvider>
                 </SuperTokensProvider>

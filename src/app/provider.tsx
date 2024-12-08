@@ -17,8 +17,6 @@ SearchOpenAPI.BASE = process.env.NEXT_PUBLIC_SEARCH_URL!;
 const queryClient = new QueryClient();
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-    useMatomoTracker();
-
     return (
         <SuperTokensProvider>
             <QueryClientProvider client={queryClient}>

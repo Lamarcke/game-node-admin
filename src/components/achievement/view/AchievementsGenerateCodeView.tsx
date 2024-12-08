@@ -62,7 +62,7 @@ const AchievementsGenerateCodeView = () => {
             threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
 
             const resp =
-                await AchievementsCodeService.achievementsCodeControllerGenerate(
+                await AchievementsCodeService.achievementsCodeControllerGenerateV1(
                     {
                         achievementId: selectedAchievementId,
                         expiresAt: threeDaysFromNow.toISOString(),

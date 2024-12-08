@@ -17,9 +17,11 @@ import {
     Tooltip,
 } from "@mantine/core";
 import {
+    ActivityComment,
     CommentService,
     FindAllCommentsDto,
     Report,
+    ReviewComment,
     ReviewsService,
 } from "@/wrapper/server";
 import ReportSourceType = Report.sourceType;
@@ -48,7 +50,7 @@ const getSourceUrl = async (report: Report) => {
         report.sourceType,
     )
         .with(ReportSourceType.REVIEW, async () => {
-            const review = await ReviewsService.reviewsControllerFindOneById(
+            const review = await ReviewsService.reviewsControllerFindOneByIdV1(
                 report.targetReviewId!,
             );
             return `/game/${review.gameId}?reviewId=${review.id}`;
@@ -59,14 +61,23 @@ const getSourceUrl = async (report: Report) => {
         .with(ReportSourceType.REVIEW_COMMENT, async () => {
             const commentSourceType = FindAllCommentsDto.sourceType.REVIEW;
             const reviewComment =
-                await CommentService.commentControllerFindOneById(
+                await CommentService.commentControllerFindOneByIdV1(
                     commentSourceType,
                     report.targetReviewCommentId!,
                 );
-            const review = await ReviewsService.reviewsControllerFindOneById(
-                reviewComment.reviewId,
+            const review = await ReviewsService.reviewsControllerFindOneByIdV1(
+                (reviewComment as ReviewComment).reviewId,
             );
             return `/game/${review.gameId}?reviewId=${review.id}`;
+        })
+        .with(ReportSourceType.ACTIVITY_COMMENT, async () => {
+            const commentSourceType = FindAllCommentsDto.sourceType.REVIEW;
+            const activityComment =
+                (await CommentService.commentControllerFindOneByIdV1(
+                    commentSourceType,
+                    report.targetReviewCommentId!,
+                )) as ActivityComment;
+            return `/activity/detail/${activityComment.activityId}`;
         })
         .exhaustive();
 };

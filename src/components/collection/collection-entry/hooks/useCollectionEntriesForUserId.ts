@@ -12,8 +12,9 @@ export default function useCollectionEntriesForUserId(
     return useQuery({
         queryKey: ["collection-entries", "all", userId, offset, limit],
         queryFn: async () => {
-            return CollectionsEntriesService.collectionsEntriesControllerFindAllByLibraryId(
+            return CollectionsEntriesService.collectionsEntriesControllerFindAllByLibraryIdV1(
                 userId,
+                {},
                 offset,
                 limit,
             );

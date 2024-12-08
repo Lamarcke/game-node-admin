@@ -18,7 +18,7 @@ export async function getCollectionEntriesByCollectionId(
     orderBy?: Record<string, any>,
 ): Promise<CollectionEntriesPaginatedResponseDto | undefined> {
     try {
-        return await CollectionsEntriesService.collectionsEntriesControllerFindAllByCollectionId(
+        return await CollectionsEntriesService.collectionsEntriesControllerFindAllByCollectionIdV1(
             collectionId,
             {
                 offset,
