@@ -66,10 +66,12 @@ const AchievementsGrantView = () => {
                 throw new Error("At least one user must be selected.");
             }
 
-            await AchievementsService.achievementsControllerGrantAchievements({
-                achievementId: selectedAchievementId,
-                targetUserIds: selectedUserIds,
-            });
+            await AchievementsService.achievementsControllerGrantAchievementsV1(
+                {
+                    achievementId: selectedAchievementId,
+                    targetUserIds: selectedUserIds,
+                },
+            );
         },
         onError: (err) => {
             if (err instanceof ApiError) {

@@ -29,14 +29,4 @@ export const navLinks: NavItem[] = [
             },
         ],
     },
-    {
-        label: "Game",
-        icon: IconDeviceGamepad,
-        links: [
-            {
-                label: "Manage exclusions",
-                link: "/dashboard/game/filter",
-            },
-        ],
-    },
 ];

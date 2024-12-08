@@ -81,6 +81,14 @@ const UsersManagementTable = () => {
             showAlertBanner: isError,
             showProgressBars: isFetching,
         },
+        initialState: {
+            sorting: [
+                {
+                    id: "createdAt",
+                    desc: true,
+                },
+            ],
+        },
         enableRowActions: true,
         renderRowActionMenuItems: (item) => {
             const profile = item.row.original.profile;

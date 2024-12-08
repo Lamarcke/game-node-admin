@@ -6,15 +6,15 @@ import { ActivitiesService } from "@/wrapper/server";
  * @param userId
  */
 export function useActivities(userId?: string) {
-  return useQuery({
-    queryKey: ["activities", "all", userId],
-    queryFn: async () => {
-      return ActivitiesService.activitiesRepositoryControllerFindLatest(
-        userId,
-        0,
-        9999999999,
-      );
-    },
-    retry: 1,
-  });
+    return useQuery({
+        queryKey: ["activities", "all", userId],
+        queryFn: async () => {
+            return ActivitiesService.activitiesRepositoryControllerFindLatestV1(
+                userId,
+                0,
+                9999999999,
+            );
+        },
+        retry: 1,
+    });
 }
